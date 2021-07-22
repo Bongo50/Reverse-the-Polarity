@@ -13,7 +13,7 @@ client = discord.Client()
 goodbyeWords = ['i\'m leaving', 'i\'m going', 'gtg', 'got to go', 'i have to go', 'i must go', 'i must depart', 'i\'m going', 'i\im leaving', 'bye for now']
 
 def url_ready(text):
-    newText = " "
+    newText = ""
     for char in text:
         if char != " ":
             newText += char
@@ -43,8 +43,11 @@ def tardis_get_page_contents(page):
     page_part_html = page_part_html.replace("</i>", "*")
     page_soup = BeautifulSoup(page_part_html, 'html.parser')
     page_text = page_soup.get_text()
-    page_trunctuated = page_text[:2000]
-    return page_trunctuated
+    page_url = "https://tardis.fandom.com/wiki/"+page
+    page_trunctuated = page_text[:2000-(len(page_url)+3)]
+    message = page_trunctuated+'''
+<'''+page_url+'>'
+    return message
 
 def doctorwhumour_top():
     response = requests.get("https://www.reddit.com/r/DoctorWhumour/top.json?limit=1&t=hour", headers = {'User-agent': 'Reverse the Polarity!'})
